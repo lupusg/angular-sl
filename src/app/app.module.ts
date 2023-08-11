@@ -9,7 +9,6 @@ import { LoginComponent } from './components/login/login.component';
 import { MainPageComponent } from './components/main-page/main-page.component';
 import { GoogleLoginProvider, SocialLoginModule } from 'angularx-social-login';
 
-
 @NgModule({
   declarations: [
     AppComponent,
