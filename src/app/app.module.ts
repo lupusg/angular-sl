@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { MainPageComponent } from './components/main-page/main-page.component';
-import { GoogleLoginProvider, SocialLoginModule } from 'angularx-social-login';
+import { GoogleLoginProvider, GoogleSigninButtonModule, SocialAuthServiceConfig, SocialLoginModule } from '@abacritt/angularx-social-login';
 
 @NgModule({
   declarations: [
@@ -17,28 +16,30 @@ import { GoogleLoginProvider, SocialLoginModule } from 'angularx-social-login';
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot([
-      {path: 'login', component: LoginComponent},
-      {path: 'mainpage', component: MainPageComponent, canActivate: []}, // only accessible if authorised
-      {path: '**', component: LoginComponent}
-    ]),
     AppRoutingModule,
     BrowserAnimationsModule,
-    SocialLoginModule
+    SocialLoginModule,
+    GoogleSigninButtonModule,
   ],
-  providers: [{
-    provide: 'SocialAuthServiceConfig',
-    useValue: {
-      autoLogin: true, //keeps the user signed in
-      providers: [
-        {
-          id: GoogleLoginProvider.PROVIDER_ID,
-          provider: new GoogleLoginProvider('88531598190-da2d865u4rhi4bfmi2dsfmtrpqbjtu41.apps.googleusercontent.com') // your client id
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '88531598190-da2d865u4rhi4bfmi2dsfmtrpqbjtu41.apps.googleusercontent.com'
+            )
+          }
+        ],
+        onError: (err) => {
+          console.error(err);
         }
-      ]
+      } as SocialAuthServiceConfig,
     }
-  },
-    ],
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
